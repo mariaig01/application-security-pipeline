@@ -1,0 +1,14 @@
+*
+!pyproject.toml
+!uv.lock
+!alembic.ini
+!appsec_pipeline/
+!appsec_pipeline/**
+!migrations/
+!migrations/**
+!tests/
+!tests/**
+!scripts/
+!scripts/**
+**/__pycache__/
+**/*.pyc

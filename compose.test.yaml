@@ -1,0 +1,32 @@
+# All fixed credentials here are disposable test-only values.
+name: appsec-tests
+
+services:
+  db-test:
+    image: postgres:17.11-bookworm@sha256:639ab7ceb90e13123085b741fb31ef493fba25463002f6da665352e7b534b652
+    environment:
+      POSTGRES_USER: appsec_test
+      POSTGRES_PASSWORD: test-only-password
+      POSTGRES_DB: appsec_test
+    tmpfs:
+      - /var/lib/postgresql/data
+    healthcheck:
+      test: [CMD-SHELL, pg_isready -U appsec_test -d appsec_test]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+
+  tests:
+    build:
+      context: .
+      target: test
+    environment:
+      TEST_DATABASE_URL: postgresql+psycopg://appsec_test:test-only-password@db-test:5432/appsec_test
+    read_only: true
+    tmpfs:
+      - /tmp:size=64m,mode=1777
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    depends_on:
+      db-test:
+        condition: service_healthy
