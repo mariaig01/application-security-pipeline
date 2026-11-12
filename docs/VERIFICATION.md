@@ -25,6 +25,10 @@ proxy `rtk`; se muestran sin ese prefijo para que puedan reproducirse sin instal
 | Suite final tras incluir utilidades en Ruff del contenedor de tests | Ruff correcto y 86 tests pasados en 11,63 s; salida 0. |
 | Inspección del filesystem y módulos de la imagen runtime | No incluye `.env`, `.env.dev-users`, tests, scripts operativos, pytest ni Ruff. |
 | Enlaces locales de README, PLAN y documentos | Todos resuelven a archivos existentes. |
+| Publicación GitHub | Repositorio público `mariaig01/application-security-pipeline`; `main` contiene los commits `d8d1786` y `225cf55`. |
+| Actions run `43188185846` | `startup_failure`, sin jobs/pasos ejecutados; no se cuenta como validación. |
+| Actions run `43188295388` | Job creado pero `failure` inmediato con `steps: []`; no se cuenta como validación. |
+| Actions run `43188416793` | Repetición con `ubuntu-latest`; `failure` inmediato con `steps: []`; no se cuenta como validación. |
 
 Los tests migran un esquema aleatorio por ejecución, revierten cada test y
 comprueban también que la migración coincide con los modelos (`alembic check`).
@@ -53,9 +57,10 @@ el control para hacerlas pasar.
 ## Límites
 
 - El acceso a Docker y los registros de paquetes requirió ejecución fuera del sandbox.
-- GitHub Actions solo podrá validarse remotamente después de publicar el proyecto.
-- La carpeta se recibió sin repositorio Git inicializado. Git ya está inicializado;
-  la publicación y la primera ejecución remota se están verificando por separado.
+- GitHub Actions está publicado, pero GitHub no ha ejecutado ningún paso del job;
+  hay que revisar la configuración de Actions/runner o las restricciones de la
+  cuenta antes de considerar CI validada.
+- El repositorio público es `https://github.com/mariaig01/application-security-pipeline`.
 - La cuenta personal confirmada por el usuario y activada en GitHub CLI es `mariaig01`.
 - No se han ejecutado los escáneres de los hitos 2/3.
 - No se ha desplegado TLS real ni se han realizado pruebas de carga.
