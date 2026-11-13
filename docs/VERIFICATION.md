@@ -29,6 +29,7 @@ proxy `rtk`; se muestran sin ese prefijo para que puedan reproducirse sin instal
 | Actions run `43188185846` | `startup_failure`, sin jobs/pasos ejecutados; no se cuenta como validación. |
 | Actions run `43188295388` | Job creado pero `failure` inmediato con `steps: []`; no se cuenta como validación. |
 | Actions run `43188416793` | Repetición con `ubuntu-latest`; `failure` inmediato con `steps: []`; no se cuenta como validación. |
+| Actions run `43377302994` | Correcta en 44 s: runner, checkout, Ruff, 86 tests (`86 passed in 19.06s`), limpieza y job completo. |
 
 Los tests migran un esquema aleatorio por ejecución, revierten cada test y
 comprueban también que la migración coincide con los modelos (`alembic check`).
@@ -57,9 +58,8 @@ el control para hacerlas pasar.
 ## Límites
 
 - El acceso a Docker y los registros de paquetes requirió ejecución fuera del sandbox.
-- GitHub Actions está publicado, pero GitHub no ha ejecutado ningún paso del job;
-  hay que revisar la configuración de Actions/runner o las restricciones de la
-  cuenta antes de considerar CI validada.
+- Las ejecuciones iniciales fueron bloqueadas por facturación; tras el desbloqueo,
+  GitHub Actions ejecutó el workflow completo y pasó la suite.
 - El repositorio público es `https://github.com/mariaig01/application-security-pipeline`.
 - La cuenta personal confirmada por el usuario y activada en GitHub CLI es `mariaig01`.
 - No se han ejecutado los escáneres de los hitos 2/3.

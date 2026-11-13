@@ -8,7 +8,7 @@ Estado: **completado y verificado localmente** (2026-09-22).
 - [x] PostgreSQL, migración Alembic y datos ficticios reproducibles.
 - [x] Dependencias bloqueadas, Docker y Compose.
 - [x] Tests funcionales y de autorización contra PostgreSQL aislado: 86 tests pasados.
-- [x] Workflow básico de tests en GitHub Actions creado; publicación remota realizada.
+- [x] Workflow básico de tests en GitHub Actions creado, publicado y ejecutado correctamente.
 - [x] README, STRIDE (11 amenazas) y checklist de revisión.
 - [x] Arranque, recorrido HTTP y seed repetido verificados; resultados en
       [docs/VERIFICATION.md](docs/VERIFICATION.md).
@@ -22,9 +22,9 @@ imagen construida, migración `0001` aplicada y API/DB saludables. Recorrido HTT
 con tres sesiones correcto. Se usó el puerto local 18000 porque el 8000 estaba
 ocupado; las credenciales generadas se guardaron con permisos 0600 fuera de Git.
 El repositorio público está en https://github.com/mariaig01/application-security-pipeline.
-Se intentaron dos ejecuciones remotas de Actions; ambas terminaron en
-`failure/startup_failure` antes de crear pasos del job. La causa debe revisarse
-en la configuración/runner de GitHub; no se presentan como tests remotos pasados.
+La ejecución remota `43377302994` terminó correctamente: 86 tests pasados,
+Ruff correcto y limpieza de PostgreSQL completada. Las ejecuciones anteriores
+fallaron por el bloqueo de facturación ya resuelto.
 
 ## Hito 2 — Semgrep, Trivy y OWASP ZAP
 
