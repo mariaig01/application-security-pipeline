@@ -95,6 +95,14 @@ obligatorio su propio check. Verificar la configuración con:
 gh api repos/mariaig01/application-security-pipeline/branches/main/protection
 ```
 
+La configuración revisable está en `security/branch-protection.json`. Para
+aplicarla con una cuenta administradora del repositorio:
+
+```bash
+gh api --method PUT repos/mariaig01/application-security-pipeline/branches/main/protection \
+  --input security/branch-protection.json
+```
+
 ## Demostración para entrevista
 
 `python3 demos/idor.py` muestra que conocer el ID permite a Bob leer texto de Alice

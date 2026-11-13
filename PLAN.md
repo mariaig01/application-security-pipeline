@@ -28,7 +28,7 @@ fallaron por el bloqueo de facturación ya resuelto.
 
 ## Hito 2 — Semgrep, Trivy y OWASP ZAP
 
-Estado: **implementado; verificación remota en curso**.
+Estado: **completado y verificado localmente y en GitHub** (2026-11-13).
 
 - [x] Integrar escáneres con versiones fijadas e informes como artefactos de CI.
 - [x] Semgrep sobre código, Trivy sobre la imagen construida y ZAP sobre un
@@ -39,9 +39,14 @@ Estado: **implementado; verificación remota en curso**.
 Aceptación: informes reales de los tres escáneres y evidencia de cobertura
 autenticada de ZAP. Un fallo del escáner nunca equivale a un análisis limpio.
 
+Evidencia: ejecución Security `43452105398`, con Semgrep y ZAP correctos y Trivy
+bloqueando hallazgos reales, con artefactos publicados para los tres escáneres.
+La base actualizada y el parche de zlib reducen los bloqueos locales de 110 a 47.
+Queda trabajo de remediación de esos hallazgos, independiente de la integración.
+
 ## Hito 3 — Bloqueos, demostraciones y documentación final
 
-Estado: **implementado; activación de protección de main en curso**.
+Estado: **completado**. Políticas y configuración de protección versionadas.
 
 - [x] Bloquear tests fallidos, errores de escáner, Semgrep ERROR, Trivy
       High/Critical y ZAP High. Revisar Medium/Low sin convertirlos en silencio.
@@ -53,6 +58,12 @@ Estado: **implementado; activación de protección de main en curso**.
 
 Aceptación: cada bloqueo tiene una demostración, las excepciones son auditables
 y ninguna opción de configuración vuelve vulnerable la aplicación normal.
+
+Cuatro pruebas de política verifican bloqueos y excepciones; la demo BOLA
+comprueba el fallo y su corrección y Semgrep debe detectar la fixture aislada.
+La protección exige PR, rama actualizada y los cuatro checks, también al administrador.
+Configuración: `security/branch-protection.json`. Los hallazgos de Trivy impiden
+integrar cambios hasta remediarlos o aprobar una excepción concreta justificada.
 
 ## Decisiones
 
