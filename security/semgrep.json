@@ -1,0 +1,10 @@
+{
+  "rules": [
+    {"id":"python-eval","languages":["python"],"severity":"ERROR","message":"Do not evaluate user-controlled code.","pattern-either":[{"pattern":"eval(...)"},{"pattern":"exec(...)"}]},
+    {"id":"unsafe-deserialization","languages":["python"],"severity":"ERROR","message":"Do not deserialize untrusted pickle data.","pattern-either":[{"pattern":"pickle.loads(...)"},{"pattern":"pickle.load(...)"}]},
+    {"id":"shell-execution","languages":["python"],"severity":"ERROR","message":"Use argument arrays without shell=True.","pattern":"subprocess.$METHOD(..., shell=True, ...)"},
+    {"id":"debug-enabled","languages":["python"],"severity":"ERROR","message":"Do not enable debug mode in the application.","pattern":"$APP.run(..., debug=True, ...)"},
+    {"id":"csrf-disabled","languages":["python"],"severity":"ERROR","message":"Do not disable CSRF protection.","pattern-either":[{"pattern":"$APP.config[\"WTF_CSRF_ENABLED\"] = False"},{"pattern":"$CSRF.exempt(...)"}]},
+    {"id":"formatted-sql","languages":["python"],"severity":"ERROR","message":"Bind SQL values instead of formatting strings.","pattern":"text(f\"...\")"}
+  ]
+}

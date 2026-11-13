@@ -14,5 +14,6 @@ reports/
 *.log
 cookies*.txt
 .DS_Store
-.agents/
-.codex/
+# Local workspace metadata directories; GitHub configuration remains versioned.
+/.[a-z]*/
+!/.github/

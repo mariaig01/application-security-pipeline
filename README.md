@@ -4,9 +4,9 @@ API de documentos privados para aprender Application Security y DevSecOps y
 explicar decisiones en una entrevista. Python/Flask, SQLAlchemy, PostgreSQL,
 pytest y Docker Compose. Sin frontend ni subida de archivos.
 
-El hito 1 incluye la aplicación, tests, Docker y un workflow de tests.
-Semgrep, Trivy y OWASP ZAP se incorporarán en los hitos 2 y 3:
-**todavía no hay resultados de esos escáneres**. Estado y aceptación en
+Incluye la aplicación, tests, Docker y un pipeline con Semgrep, Trivy y ZAP
+autenticado. Las políticas de bloqueo, excepciones y demostraciones se explican
+en [SECURITY_PIPELINE.md](docs/SECURITY_PIPELINE.md). Estado y aceptación en
 [PLAN.md](PLAN.md); ejecuciones reales en [VERIFICATION.md](docs/VERIFICATION.md).
 
 ## Arranque con Docker
@@ -218,7 +218,7 @@ el documento o modifica datos. `/health` tiene su respuesta mínima independient
 
 `pyproject.toml` expresa familias compatibles y `uv.lock` fija versiones
 directas/transitivas y hashes. Docker y CI instalan con `--frozen`. Python
-3.12.14 y PostgreSQL 17.11 están fijados por digest multi-arquitectura. Actualizar
+3.12 sobre Debian 13 y PostgreSQL 17.11 están fijados por digest multi-arquitectura. Actualizar
 el lock/digests será una decisión revisada; fijarlos no implica ausencia de CVE.
 
 Las contraseñas usan scrypt `N=32768, r=8, p=3`, una configuración recogida por
@@ -257,15 +257,16 @@ persistidas de checkout, PostgreSQL temporal y el mismo comando Compose local.
 El job falla si fallan lint, tests o infraestructura. Crear el archivo no acredita
 una ejecución remota: consultar la pestaña Actions tras publicar en GitHub.
 
-Las políticas de Semgrep/Trivy/ZAP, sus excepciones y las reglas obligatorias de
-GitHub pertenecen a los hitos siguientes. ZAP tendrá que autenticar sesiones y
-demostrar acceso a rutas privadas. No hay demos vulnerables dentro de la API.
+El workflow Security aplica los umbrales de bloqueo y publica informes como
+artefactos. ZAP verifica acceso autenticado a rutas privadas. Las demostraciones
+vulnerables se ejecutan aparte mediante `python3 demos/idor.py` y el análisis
+estático de `demos/unsafe.py`; están excluidas de la imagen de aplicación.
 
 Para explicar el caso IDOR/BOLA: un UUID conocido no otorga permiso; la consulta
 combina identificador y propietario. El test
 `test_cross_user_isolation_read_write_delete_and_list` intenta leer, modificar,
 borrar y listar documentos de otra persona y comprueba que permanecen intactos.
 El modelo enlaza amenazas con controles y pruebas; las demostraciones vulnerables
-aisladas para enseñar el antes/después se prepararán en el hito 3.
+aisladas permiten enseñar el antes/después sin debilitar la aplicación.
 
 Antes de revisar cambios, usar la [checklist](docs/CODE_REVIEW_CHECKLIST.md).

@@ -28,12 +28,12 @@ fallaron por el bloqueo de facturación ya resuelto.
 
 ## Hito 2 — Semgrep, Trivy y OWASP ZAP
 
-Estado: **pendiente**.
+Estado: **implementado; verificación remota en curso**.
 
-- [ ] Integrar escáneres con versiones fijadas e informes como artefactos de CI.
-- [ ] Semgrep sobre código, Trivy sobre la imagen construida y ZAP sobre un
+- [x] Integrar escáneres con versiones fijadas e informes como artefactos de CI.
+- [x] Semgrep sobre código, Trivy sobre la imagen construida y ZAP sobre un
       entorno temporal con PostgreSQL y datos ficticios.
-- [ ] Configurar login, cookies y CSRF de ZAP; demostrar que visita rutas
+- [x] Configurar login, cookies y CSRF de ZAP; demostrar que visita rutas
       autenticadas. Fallar si el entorno o la autenticación no están disponibles.
 
 Aceptación: informes reales de los tres escáneres y evidencia de cobertura
@@ -41,20 +41,24 @@ autenticada de ZAP. Un fallo del escáner nunca equivale a un análisis limpio.
 
 ## Hito 3 — Bloqueos, demostraciones y documentación final
 
-Estado: **pendiente**.
+Estado: **implementado; activación de protección de main en curso**.
 
-- [ ] Bloquear tests fallidos, errores de escáner, Semgrep ERROR, Trivy
+- [x] Bloquear tests fallidos, errores de escáner, Semgrep ERROR, Trivy
       High/Critical y ZAP High. Revisar Medium/Low sin convertirlos en silencio.
-- [ ] Excepciones con identificador, alcance, motivo, responsable y fecha de
+- [x] Excepciones con identificador, alcance, motivo, responsable y fecha de
       revisión; rechazar excepciones vencidas.
-- [ ] Documentar rulesets/checks requeridos de GitHub antes de integrar cambios.
-- [ ] Demostraciones vulnerables aisladas del código y despliegue normales.
-- [ ] Mostrar riesgo → fallo reproducible → control → test posterior.
+- [x] Documentar rulesets/checks requeridos de GitHub antes de integrar cambios.
+- [x] Demostraciones vulnerables aisladas del código y despliegue normales.
+- [x] Mostrar riesgo → fallo reproducible → control → test posterior.
 
 Aceptación: cada bloqueo tiene una demostración, las excepciones son auditables
 y ninguna opción de configuración vuelve vulnerable la aplicación normal.
 
 ## Decisiones
+
+- Los umbrales también bloquean vulnerabilidades sin parche; no se han aprobado
+  excepciones para ocultar los hallazgos actuales de Trivy.
+- Instrucciones de análisis y revisión en [SECURITY_PIPELINE.md](docs/SECURITY_PIPELINE.md).
 
 - Administrador: lectura y borrado globales por rutas `/admin`; solo el dueño edita.
 - Sin registro público: usuarios y roles se crean mediante CLI de confianza.

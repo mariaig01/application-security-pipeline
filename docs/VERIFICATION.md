@@ -3,8 +3,7 @@
 Fecha: 2026-09-22. Comprobaciones locales; no representa una ejecución de GitHub
 Actions ni resultados de Semgrep, Trivy o ZAP.
 
-Estado: **hito 1 verificado localmente**. Los comandos se ejecutaron mediante el
-proxy `rtk`; se muestran sin ese prefijo para que puedan reproducirse sin instalarlo.
+Estado: **hito 1 verificado localmente y en GitHub Actions**.
 
 ## Comandos y resultados
 
@@ -62,5 +61,5 @@ el control para hacerlas pasar.
   GitHub Actions ejecutó el workflow completo y pasó la suite.
 - El repositorio público es `https://github.com/mariaig01/application-security-pipeline`.
 - La cuenta personal confirmada por el usuario y activada en GitHub CLI es `mariaig01`.
-- No se han ejecutado los escáneres de los hitos 2/3.
+- Los resultados de los escáneres se registran en el informe de los hitos 2/3.
 - No se ha desplegado TLS real ni se han realizado pruebas de carga.

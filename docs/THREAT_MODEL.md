@@ -1,4 +1,4 @@
-# Modelo de amenazas STRIDE — hito 1
+# Modelo de amenazas STRIDE
 
 Fecha: 2026-09-22. Alcance: API de texto privado, CLI, PostgreSQL, contenedores y
 workflow de tests. No hay frontend, adjuntos, integraciones salientes ni registro
@@ -37,7 +37,7 @@ flowchart LR
   subgraph ci["Límite 3 · runner temporal de GitHub Actions"]
     source["Checkout de código revisable"] --> tests["Ruff + pytest"]
     tests --> testdb[("PostgreSQL exclusivo de tests")]
-    scans["Semgrep / Trivy / ZAP\nPREVISTOS · hito 2"]
+    scans["Semgrep / Trivy / ZAP autenticado\nPolíticas y artefactos"]
   end
   registry["Límite 4 · PyPI / Docker Hub / acciones"] -->|"Dependencias, imágenes y herramientas"| source
   registry -->|"Build con versiones y digests"| api
@@ -65,6 +65,14 @@ volumen ni datos. CI no utiliza credenciales de desarrollo ni producción.
 | T10 · T/E (cadena de suministro) | Dependencia, imagen o acción comprometida o vulnerable. | `uv.lock` con hashes, imágenes por digest, acción por SHA, permisos CI mínimos, runtime sin root ni herramientas de tests. | Construcción congelada y workflow revisable. | Fijar no elimina CVE: Semgrep/Trivy y política de actualización en hitos 2/3. Ningún hallazgo de escáner declarado todavía. |
 | T11 · E (base de datos) | Una inyección o compromiso de API obtiene privilegios de infraestructura. | Rol de aplicación sin superusuario/CREATEDB/CREATEROLE; DB sin puerto publicado; contraseña bootstrap distinta y ausente del contenedor API. | Comprobación operativa del rol y configuración Compose. | App y Alembic comparten propietario de tablas; separar rol runtime DML y rol de migración DDL, y limitar CONNECT entre bases, queda pendiente. |
 
+## Actualización del pipeline
+
+Semgrep, Trivy y ZAP autenticado están integrados con informes y bloqueo explícito.
+Las reglas, alcance, excepciones y riesgos residuales se describen en
+[SECURITY_PIPELINE.md](SECURITY_PIPELINE.md). Trivy detectó hallazgos del SO que
+siguen bloqueando: la integración no equivale a ausencia de vulnerabilidades.
+El análisis activo solo ataca contenedores temporales y datos ficticios.
+
 ## Prioridades y evolución
 
 T02, T03 y T04 tienen prioridad inicial: el propósito del servicio es conservar la
@@ -72,9 +80,9 @@ confidencialidad y autorización de documentos. Cada cambio de ruta debe mantene
 sus pruebas negativas. Los tests no prueban ausencia universal de vulnerabilidades.
 
 Antes de exposición pública: TLS real, secretos gestionados, restricciones de
-hosts, límites de abuso y separación de privilegios DB. Hito 2 añade análisis y
-cobertura autenticada. Hito 3 fija bloqueos, excepciones con fecha de revisión,
-rulesets y demos aisladas. No se introducirá un flag `VULNERABLE=true` en esta API.
+hosts, límites de abuso y separación de privilegios DB. Los análisis, políticas y
+demos están descritos en la actualización anterior; los controles de aplicación
+de la tabla corresponden al primer hito. No hay flags para desactivar autorización.
 
 Fuentes: [Flask security](https://flask.palletsprojects.com/en/stable/web-security/),
 [Flask-Login](https://flask-login.readthedocs.io/en/latest/),
