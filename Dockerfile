@@ -1,4 +1,13 @@
-FROM python:3.12-slim-trixie@sha256:5e2bdb1b0d542d5039cffb8181c65930093949194a65c365dfb1b0fe13a4fa5b AS dependencies
+FROM python:3.12-alpine@sha256:c5ba3deef00c7758561a0f03c26f44f10589263d40e732b8748e0d1f38f6dd89 AS python-base
+# This service supports PostgreSQL only. Remove the unused SQLite binding and
+# its package, retaining the package-manager inventory for every installed library.
+RUN find /usr/local/lib/python3.12/lib-dynload -maxdepth 1 -name '_sqlite3*.so' -delete \
+    && runtime_deps="$(apk info --depends .python-rundeps | sed -n '/^so:/p' | grep -v '^so:libsqlite3.so.0$')" \
+    && apk add --no-cache --virtual .app-rundeps $runtime_deps \
+    && apk del .python-rundeps \
+    && apk add --no-cache krb5-libs=1.22.3-r0
+
+FROM python-base AS dependencies
 WORKDIR /build
 RUN pip install --no-cache-dir uv==0.12.16
 COPY pyproject.toml uv.lock ./
@@ -7,14 +16,12 @@ RUN UV_PROJECT_ENVIRONMENT=/opt/venv uv sync --frozen --no-dev --no-install-proj
 FROM dependencies AS test-dependencies
 RUN UV_PROJECT_ENVIRONMENT=/opt/venv uv sync --frozen --no-install-project --no-cache
 
-FROM python:3.12-slim-trixie@sha256:5e2bdb1b0d542d5039cffb8181c65930093949194a65c365dfb1b0fe13a4fa5b AS app-base
+FROM python-base AS app-base
 ENV PATH="/opt/venv/bin:$PATH" \
     PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends zlib1g=1:1.3.dfsg+really1.3.1-1+deb13u1 \
-    && rm -rf /var/lib/apt/lists/*
-RUN useradd --uid 10001 --create-home --shell /usr/sbin/nologin appsec
+RUN addgroup -g 10001 appsec \
+    && adduser -D -u 10001 -G appsec -s /sbin/nologin appsec
 WORKDIR /app
 COPY --from=dependencies /opt/venv /opt/venv
 COPY appsec_pipeline ./appsec_pipeline

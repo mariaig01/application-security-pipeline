@@ -36,8 +36,12 @@ analiza aparte: el pipeline exige que el escáner detecte y bloquee su `eval`.
 
 Trivy examina paquetes del sistema operativo y Python en la imagen runtime que
 se construye desde el Dockerfile. Un High/Critical sin parche también bloquea.
-Se actualizó la base de Debian 12 a Debian 13 tras observar vulnerabilidades;
-los hallazgos residuales se mantienen visibles para priorizar remediación.
+Tras los análisis iniciales de Debian se adoptó Alpine para reducir los paquetes
+del runtime. Se eliminan SQLite y su extensión nativa porque la API usa PostgreSQL;
+no se oculta un componente que siga disponible. Se conserva la base de paquetes
+APK y se actualiza Kerberos a `1.22.3-r0`, versión corregida indicada por Trivy.
+Las ruedas musllinux están en el mismo lockfile y los tests verifican la compatibilidad.
+Los informes conservan los avisos Medium/Low y las excepciones siguen vacías.
 
 ZAP arranca un entorno exclusivo `appsec-security`, con DB en tmpfs y una clave
 de sesión aleatoria. Genera un usuario, obtiene CSRF, inicia sesión y crea un

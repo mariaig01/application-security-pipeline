@@ -218,8 +218,14 @@ el documento o modifica datos. `/health` tiene su respuesta mínima independient
 
 `pyproject.toml` expresa familias compatibles y `uv.lock` fija versiones
 directas/transitivas y hashes. Docker y CI instalan con `--frozen`. Python
-3.12 sobre Debian 13 y PostgreSQL 17.11 están fijados por digest multi-arquitectura. Actualizar
+3.12 sobre Alpine 3.24 y PostgreSQL 17.11 están fijados por digest multi-arquitectura. Actualizar
 el lock/digests será una decisión revisada; fijarlos no implica ausencia de CVE.
+
+La imagen de la API conserva el inventario APK y elimina SQLite y su extensión
+nativa de Python: el único motor soportado por el servicio es PostgreSQL.
+Kerberos está actualizado a `1.22.3-r0`. El cambio de glibc a musl se verifica
+con la suite contra PostgreSQL y con ZAP; las dependencias Python siguen usando
+las versiones y hashes de `uv.lock`, incluidas sus ruedas musllinux.
 
 Las contraseñas usan scrypt `N=32768, r=8, p=3`, una configuración recogida por
 [OWASP](https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html).
