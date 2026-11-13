@@ -9,6 +9,10 @@ autenticado. Las políticas de bloqueo, excepciones y demostraciones se explican
 en [SECURITY_PIPELINE.md](docs/SECURITY_PIPELINE.md). Estado y aceptación en
 [PLAN.md](PLAN.md); ejecuciones reales en [VERIFICATION.md](docs/VERIFICATION.md).
 
+Para entender qué hace la aplicación, por qué existen sus controles y cómo se
+conectan los tests y escáneres, consulta la
+[explicación completa del proyecto](docs/PROJECT_EXPLANATION.md).
+
 ## Arranque con Docker
 
 Requisitos: Docker Engine con Compose v2 o posterior, Python 3.12 para las
