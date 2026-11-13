@@ -69,8 +69,9 @@ volumen ni datos. CI no utiliza credenciales de desarrollo ni producción.
 
 Semgrep, Trivy y ZAP autenticado están integrados con informes y bloqueo explícito.
 Las reglas, alcance, excepciones y riesgos residuales se describen en
-[SECURITY_PIPELINE.md](SECURITY_PIPELINE.md). Trivy detectó hallazgos del SO que
-siguen bloqueando: la integración no equivale a ausencia de vulnerabilidades.
+[SECURITY_PIPELINE.md](SECURITY_PIPELINE.md). Los hallazgos bloqueantes iniciales
+se remediaron con una base reducida, retirada de SQLite y actualización de Kerberos.
+Pasar los umbrales no equivale a ausencia de cualquier vulnerabilidad.
 El análisis activo solo ataca contenedores temporales y datos ficticios.
 
 ## Prioridades y evolución

@@ -41,8 +41,9 @@ autenticada de ZAP. Un fallo del escáner nunca equivale a un análisis limpio.
 
 Evidencia: ejecución Security `43452105398`, con Semgrep y ZAP correctos y Trivy
 bloqueando hallazgos reales, con artefactos publicados para los tres escáneres.
-La base actualizada y el parche de zlib reducen los bloqueos locales de 110 a 47.
-Queda trabajo de remediación de esos hallazgos, independiente de la integración.
+La primera actualización y el parche de zlib redujeron los bloqueos de 110 a 47.
+La remediación posterior usa Alpine, retira SQLite y actualiza Kerberos:
+Trivy local detecta cero High/Critical, sin excepciones ni cambios de umbral.
 
 ## Hito 3 — Bloqueos, demostraciones y documentación final
 
@@ -62,13 +63,13 @@ y ninguna opción de configuración vuelve vulnerable la aplicación normal.
 Cuatro pruebas de política verifican bloqueos y excepciones; la demo BOLA
 comprueba el fallo y su corrección y Semgrep debe detectar la fixture aislada.
 La protección exige PR, rama actualizada y los cuatro checks, también al administrador.
-Configuración: `security/branch-protection.json`. Los hallazgos de Trivy impiden
+Configuración: `security/branch-protection.json`. Los hallazgos bloqueantes impiden
 integrar cambios hasta remediarlos o aprobar una excepción concreta justificada.
 
 ## Decisiones
 
-- Los umbrales también bloquean vulnerabilidades sin parche; no se han aprobado
-  excepciones para ocultar los hallazgos actuales de Trivy.
+- Los umbrales también bloquean vulnerabilidades sin parche; la lista de excepciones
+  está vacía. Se conserva el historial de hallazgos y correcciones.
 - Instrucciones de análisis y revisión en [SECURITY_PIPELINE.md](docs/SECURITY_PIPELINE.md).
 
 - Administrador: lectura y borrado globales por rutas `/admin`; solo el dueño edita.
